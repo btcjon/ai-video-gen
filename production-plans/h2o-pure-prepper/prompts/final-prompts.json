@@ -1,0 +1,104 @@
+{
+  "campaign": "H2O Pure - Prepper Community",
+  "target_audience": "Preppers (practical, skeptical, family-focused)",
+  "emotional_journey": "Vulnerability → Recognition → Confidence",
+  "key_message": "Backup for your backup - simple, proven, American-made",
+  "tone": "Authentic, documentary-style, trusted neighbor",
+  "platform": "YouTube/Facebook/Prepper Communities",
+  "total_duration": "32 seconds",
+  "segments": 4,
+  "technical_specs": {
+    "lens": "50mm primary (natural perspective)",
+    "aperture": "F4-F5.6 (balanced sharpness)",
+    "movement": "Mostly static, some handheld",
+    "lighting": "2:1 exposure ratio, natural sources",
+    "colors": "60% earth tones, 30% functional colors, 10% safety accents",
+    "aspect_ratio": "9:16",
+    "audio_strategy": "NO NARRATION - post-production voiceover only"
+  },
+  "scenes": [
+    {
+      "name": "Scene 1 - Reality Check",
+      "segment": 1,
+      "duration": "0:00-0:08",
+      "continuation": "standalone",
+      "emotional_beat": "Vulnerability - recognizing the gap",
+      "prompt": "A weathered middle-aged man with calloused hands and visible pores kneels beside a murky creek in golden hour light, wearing a faded flannel shirt with rolled sleeves and slight sweat stains. His graying beard shows individual hairs catching the warm 2:1 exposure ratio sunlight filtering through trees, creating soft volumetric rays in the humid air with floating dust particles. He cups the questionable water in his work-worn hands, examining it with a concerned expression as his brow furrows with natural skin texture and worry lines. Shot on 50mm lens at F4 aperture from eye-level angle with slight handheld movement, capturing the authentic moment of a practical man facing water uncertainty. The scene features 60% warm earth tones from the forest setting, 30% muted greens from foliage, and 10% golden accent light on his weathered skin. Ambient forest sounds of flowing water and distant birds fill the natural environment (no subtitles). Avoid perfect lighting, artificial poses, unrealistic skin, or staged scenarios.",
+      "imperfections": "Calloused hands, visible pores, sweat stains, individual beard hairs, natural worry lines",
+      "camera_specs": "50mm lens, F4 aperture, eye-level, handheld movement",
+      "lighting": "2:1 exposure ratio, golden hour sunlight, volumetric rays, dust particles",
+      "color_palette": "60% earth tones, 30% muted greens, 10% golden accents"
+    },
+    {
+      "name": "Scene 2 - The Solution",
+      "segment": 2,
+      "duration": "0:08-0:16",
+      "continue_from": "Scene 1",
+      "use_last_frame": false,
+      "prompt_similarity": "15% - new environment",
+      "emotional_beat": "Recognition - discovering the backup",
+      "prompt": "The same weathered man with calloused hands and visible pores now stands in his well-organized garage workshop, fluorescent lighting creating a 2:1 exposure ratio against the concrete walls. He wears the same faded flannel with rolled sleeves, now examining his water storage setup with mason jars, camping gear, and emergency supplies visible on metal shelving. His work-worn fingers with dirt under the nails reach toward a small blue H2O Pure bottle on the workbench, surrounded by practical prepping supplies. Shot on 50mm lens at F4.5 aperture from slightly low angle with static camera positioning, emphasizing his methodical approach to preparedness. The scene features 60% industrial gray and beige tones from the garage environment, 30% functional silver and black from tools and equipment, and 10% blue safety accents from the product. Ambient garage sounds of distant ventilation and subtle equipment hums fill the practical workspace (no subtitles). Avoid perfect organization, pristine conditions, or commercial staging.",
+      "imperfections": "Calloused hands, dirt under nails, worn flannel, concrete floor imperfections",
+      "camera_specs": "50mm lens, F4.5 aperture, slightly low angle, static positioning",
+      "lighting": "2:1 exposure ratio, fluorescent lighting, industrial environment",
+      "color_palette": "60% industrial gray/beige, 30% functional silver/black, 10% blue accents"
+    },
+    {
+      "name": "Scene 3 - Product Demonstration",
+      "segment": 3,
+      "duration": "0:16-0:24",
+      "continuation": "image-to-video",
+      "use_product_image": true,
+      "image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
+      "emotional_beat": "Understanding - seeing how simple it is",
+      "prompt": "Show weathered hands with visible calluses and pores carefully holding the H2O Pure bottle, demonstrating the compact size by rotating it slowly in natural workshop lighting with 2:1 exposure ratio. The hands show work-worn texture with dirt traces under the fingernails and slightly rough skin, emphasizing the practical nature of the user. Gentle movement as fingers trace the product label, highlighting the key information: treats 15 gallons, 8 drops per gallon, made in USA. Shot on 50mm lens at F5.6 aperture with macro-style framing, slight handheld movement for authentic feel. Atmospheric dust particles float in the workshop air with subtle shadows and natural imperfections on the workbench surface. The scene maintains 60% neutral workshop tones, 30% skin tone and clothing colors, and 10% product blue accents for clear visibility. Ambient workshop sounds with subtle bottle handling audio (no subtitles). Avoid perfect hands, studio lighting, or artificial presentation.",
+      "imperfections": "Callused hands, dirt under nails, rough skin texture, workbench wear",
+      "camera_specs": "50mm lens, F5.6 aperture, macro framing, slight handheld movement",
+      "lighting": "2:1 exposure ratio, natural workshop lighting, dust particles",
+      "color_palette": "60% neutral workshop tones, 30% skin/clothing, 10% product blue"
+    },
+    {
+      "name": "Scene 4 - Confidence & Trust",
+      "segment": 4,
+      "duration": "0:24-0:32",
+      "continue_from": "Scene 2",
+      "use_last_frame": false,
+      "prompt_similarity": "85% - same garage environment",
+      "emotional_beat": "Confidence - the trusted backup solution",
+      "prompt": "The weathered man with calloused hands and visible pores now confidently places the small H2O Pure bottle into his organized emergency kit in the same garage workshop, fluorescent lighting maintaining the 2:1 exposure ratio. His expression shows quiet satisfaction and preparedness as he adjusts other supplies around it - first aid kit, water containers, and practical gear on metal shelving. The worn flannel shirt and work-hardened hands demonstrate his authentic lifestyle, with natural skin texture and individual facial hairs visible in the practical lighting. Shot on 50mm lens at F4.5 aperture from eye-level angle with subtle pan movement following his methodical organization. The scene features the same 60% industrial gray and beige garage tones, 30% functional equipment colors, and 10% safety blue accents from the product now integrated into his preparedness system. Ambient garage atmosphere with subtle sounds of organization and distant ventilation (no subtitles). Avoid commercialized presentation, perfect conditions, or unrealistic staging.",
+      "imperfections": "Calloused hands, visible pores, worn flannel, natural facial hair texture",
+      "camera_specs": "50mm lens, F4.5 aperture, eye-level, subtle pan movement",
+      "lighting": "2:1 exposure ratio, fluorescent workshop lighting, practical environment",
+      "color_palette": "60% industrial gray/beige, 30% functional colors, 10% safety blue"
+    }
+  ],
+  "post_production_notes": {
+    "voiceover_script": "When your main water source fails, you need a backup for your backup. H2O Pure - 8 drops treats a gallon. Simple. Proven. American-made. Because being prepared isn't paranoid, it's practical.",
+    "voiceover_timing": [
+      "0:00-0:08: 'When your main water source fails...'",
+      "0:08-0:16: 'you need a backup for your backup.'",
+      "0:16-0:24: 'H2O Pure - 8 drops treats a gallon.'",
+      "0:24-0:32: 'Simple. Proven. American-made.'"
+    ],
+    "audio_strategy": "Use authentic male voice, slightly gravelly, trustworthy neighbor tone. Add subtle workshop/outdoor ambiance."
+  },
+  "quality_assessment": {
+    "technical_completeness": 10,
+    "realism_elements": 10,
+    "creative_alignment": 9,
+    "platform_optimization": 9,
+    "overall_score": 9.5,
+    "notes": "Strong alignment with prepper values, authentic imperfections, proper technical specs. Scene 3 uses product image for accuracy."
+  },
+  "scene_continuation_strategy": {
+    "flow": "Creek → Garage → Product → Organized Kit",
+    "transitions": "Natural progression from problem to solution to implementation",
+    "85_15_rule_applied": "Scenes 2 and 4 share 85% similar garage environment with different actions"
+  },
+  "generation_commands": [
+    "python3 scripts/veo3_generate.py generate --prompt 'Scene 1 prompt' --campaign h2o-pure-prepper",
+    "python3 scripts/veo3_generate.py generate --prompt 'Scene 2 prompt' --campaign h2o-pure-prepper",
+    "python3 scripts/veo3_generate.py generate --prompt 'Scene 3 prompt' --image /home/dev/Projects/ai-video-gen/images/6mL\\ H2O\\ Pure_square.png --campaign h2o-pure-prepper",
+    "python3 scripts/veo3_generate.py generate --prompt 'Scene 4 prompt' --campaign h2o-pure-prepper"
+  ]
+}
