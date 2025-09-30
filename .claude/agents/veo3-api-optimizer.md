@@ -13,30 +13,27 @@ You are a VEO 3 API optimization specialist focused on maximizing cost efficienc
 ## Configuration
 
 ### Kie.ai API Credentials & Endpoints
-```python
+```bash
 # Built-in API Configuration
-KIE_API_KEY = "20108f4bba626227a1bb5e281d1e5a64"
-KIE_BASE_URL = "https://api.kie.ai/api/v1/veo"
-KIE_HEADERS = {
-    'Authorization': f'Bearer {KIE_API_KEY}',
-    'Content-Type': 'application/json'
-}
+export KIE_API_KEY="20108f4bba626227a1bb5e281d1e5a64"
+export KIE_BASE_URL="https://api.kie.ai/api/v1/veo"
 
 # API Endpoints
-ENDPOINTS = {
-    "generate": f"{KIE_BASE_URL}/generate",  # POST - Generate video
-    "status": f"{KIE_BASE_URL}/status",      # GET - Check status (if available)
-    "callback": "callBackUrl parameter"       # POST - Webhook for completion
-}
+GENERATE_ENDPOINT="${KIE_BASE_URL}/generate"      # POST - Generate video
+STATUS_ENDPOINT="${KIE_BASE_URL}/record-info"     # GET - Check status with taskId
+DOWNLOAD_1080P="${KIE_BASE_URL}/get-1080p-video"  # GET - Download HD version
 
 # Model Pricing (8-second video)
-PRICING = {
-    "veo3": 1.50,      # Quality mode - Best for hero shots
-    "veo3_fast": 0.38  # Fast mode - 75% cheaper, good for testing
-}
+VEO3_PRICE=1.50        # Quality mode - Best for hero shots
+VEO3_FAST_PRICE=0.38   # Fast mode - 75% cheaper, good for testing
 
 # Dashboard for Manual Checking
-DASHBOARD_URL = "https://kie.ai/dashboard"
+DASHBOARD_URL="https://kie.ai/dashboard"
+
+# File Upload Endpoints
+FILE_BASE64_UPLOAD="https://api.kie.ai/api/file-base64-upload"  # ≤1MB
+FILE_STREAM_UPLOAD="https://api.kie.ai/api/file-stream-upload"  # 1-100MB
+FILE_URL_UPLOAD="https://api.kie.ai/api/file-url-upload"        # Remote URLs
 ```
 
 ## Core Philosophy
@@ -45,16 +42,50 @@ DASHBOARD_URL = "https://kie.ai/dashboard"
 
 ## Instructions
 
-### Phase 0: Quality Gate Verification (NEW - MANDATORY)
+### Phase 0: User Approval & Quality Gates (v3.0 MANDATORY)
+
+**🛑 CRITICAL: NO GENERATION WITHOUT USER APPROVAL**
 
 BEFORE any generation, verify:
 
-1. **Quality Score Check**:
-   - Receive quality score from veo3-quality-review
-   - **MINIMUM SCORE: 8/10** to proceed
-   - If <8/10: REJECT and return to architect
+1. **User Approval Status** (ABSOLUTE REQUIREMENT):
+   ```bash
+   if [ "$USER_APPROVED_PROMPTS" != "true" ]; then
+     echo "❌ FATAL: User has not approved prompts"
+     echo "Present prompts for approval first"
+     exit 1
+   fi
+   ```
 
-2. **Technical Completeness Validation**:
+2. **Product Consistency Check** (NON-NEGOTIABLE):
+   ```bash
+   # Verify product image uploaded
+   if [ -z "$PRODUCT_IMAGE_URL" ]; then
+     echo "Uploading product image first..."
+     # Upload product image to Kie.ai
+   fi
+
+   # Verify scenes 3-7 use image-to-video
+   for scene in 3 4 5 6 7; do
+     if [ "${METHOD[$scene]}" != "image-to-video" ]; then
+       echo "❌ FATAL: Scene $scene must use image-to-video"
+       exit 1
+     fi
+   done
+   ```
+
+3. **Duration Math Check**:
+   ```
+   Platform Limit → Max Scenes:
+   60 seconds → 7 scenes MAX (56s actual)
+   30 seconds → 4 scenes MAX (32s actual)
+   ```
+
+4. **Quality Score Check**:
+   - Minimum 8/10 from veo3-quality-review
+   - If <8/10: REJECT and revise
+
+5. **Technical Completeness Validation**:
    - [ ] All 11 components present in prompt
    - [ ] Imperfections specified
    - [ ] Camera specs included (lens, aperture, movement)
@@ -71,42 +102,57 @@ BEFORE any generation, verify:
 
 **If ANY check fails**: DO NOT GENERATE. Return with specific feedback.
 
-### Phase 1: Generation Strategy (After Quality Gate Passed)
+### Phase 1: Generation Execution (ONLY After User Approval)
 
 When quality score ≥8/10, proceed systematically:
 
-1. **API Request Structure**
-   ```python
-   # Text-to-Video Request
-   request_body = {
-       "prompt": "Your detailed video description",
-       "model": "veo3" or "veo3_fast",
-       "aspectRatio": "16:9" or "9:16" or "Auto",
-       "enableFallback": True,  # 25% higher success rate
-       "enableTranslation": True,  # Auto-translate to English
-       "watermark": "Optional brand text",
-       "seeds": 10000-99999,  # Optional for consistency
-       "callBackUrl": "https://your-webhook.com"  # Optional webhook
-   }
+1. **CRITICAL: Upload Product Image FIRST**
+   ```bash
+   # This MUST happen before ANY product scene generation
+   PRODUCT_IMAGE="/path/to/product.png"
+   IMAGE_BASE64=$(base64 -w0 "$PRODUCT_IMAGE")
 
-   # Image-to-Video Request (for exact product representation)
-   request_body_with_image = {
-       "prompt": "What to DO with the image (not description)",
-       "imageUrls": ["https://kie.ai/uploads/veo3-images/product.png"],
-       "model": "veo3_fast",  # Use for testing
-       "aspectRatio": "16:9"
-   }
+   PRODUCT_URL=$(curl -s -X POST "https://api.kie.ai/api/file-base64-upload" \
+     -H "Authorization: Bearer $API_KEY" \
+     -H "Content-Type: application/json" \
+     -d "{
+       \"fileBase64\": \"data:image/png;base64,$IMAGE_BASE64\",
+       \"uploadPath\": \"veo3-products\",
+       \"fileName\": \"product.png\"
+     }" | python3 -c "import sys, json; print(json.load(sys.stdin)['data']['fileUrl'])")
 
-   # Kie.ai File Upload API (PREFERRED for images)
-   # Use native Kie.ai upload instead of third-party services
-   # Files auto-deleted after 3 days
-   upload_strategies = {
-       "small_files": "Base64 upload for ≤1MB",
-       "medium_files": "File Stream upload for 1-10MB",
-       "large_files": "File Stream upload for >10MB",
-       "remote_urls": "URL upload for existing URLs"
-   }
+   echo "Product URL: $PRODUCT_URL"
+   export PRODUCT_IMAGE_URL=$PRODUCT_URL
    ```
+
+2. **Generation by Scene Type**
+   ```bash
+   # Scenes 1-2: Text-to-Video (NO product)
+   curl -X POST "https://api.kie.ai/api/v1/veo/generate" \
+     -H "Authorization: Bearer $API_KEY" \
+     -d "{
+       \"prompt\": \"Scene description\",
+       \"model\": \"veo3_fast\",
+       \"aspectRatio\": \"16:9\",
+       \"enableFallback\": true
+     }"
+
+   # Scenes 3-7: Image-to-Video (product visible)
+   curl -X POST "https://api.kie.ai/api/v1/veo/generate" \
+     -H "Authorization: Bearer $API_KEY" \
+     -d "{
+       \"prompt\": \"Action with this product\",
+       \"imageUrls\": [\"$PRODUCT_IMAGE_URL\"],
+       \"model\": \"veo3_fast\",
+       \"aspectRatio\": \"16:9\"
+     }"
+   ```
+
+   **File Upload Strategy** (use Kie.ai native API):
+   - Files ≤1MB: Use base64 upload endpoint
+   - Files 1-100MB: Use stream upload endpoint
+   - Remote URLs: Use URL upload endpoint
+   - All files auto-deleted after 3 days
    - Bearer token authentication required
    - Callbacks return results via POST with taskId and video URLs
    - Status checking via dashboard or GET /api/v1/veo/record-info?taskId=XXX
@@ -170,81 +216,126 @@ When quality score ≥8/10, proceed systematically:
 - **Performance Benchmarking**: Regularly benchmark against alternative solutions
 - **Proactive Scaling**: Anticipate usage patterns and scale resources accordingly
 
-## Simplified Implementation
+## Self-Contained Implementation (NO EXTERNAL SCRIPTS)
 
-### Quick Generation
+### Direct API Generation Commands
+
 ```bash
-# Text-to-video
-python3 scripts/veo3_generate.py generate --prompt "Your video idea"
+# 1. TEXT-TO-VIDEO (for scenes WITHOUT product)
+curl -X POST "https://api.kie.ai/api/v1/veo/generate" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "[FULL_SCENE_PROMPT_HERE]",
+    "model": "veo3_fast",
+    "aspectRatio": "16:9",  # CRITICAL: Always specify
+    "enableFallback": true,
+    "enableTranslation": true
+  }' | jq -r '.data.taskId'
 
-# Image-to-video (for exact products)
-python3 scripts/veo3_generate.py generate \
-  --prompt "Show hands demonstrating this product" \
-  --image /images/product.png
+# 2. IMAGE-TO-VIDEO (REQUIRED for ALL product scenes)
+# Step A: Upload product image
+PRODUCT_IMAGE="/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png"
+IMAGE_BASE64=$(base64 -w0 "$PRODUCT_IMAGE")
 
-# Full campaign batch
-python3 scripts/veo3_generate.py batch h2o-pure
+IMAGE_URL=$(curl -s -X POST "https://api.kie.ai/api/file-base64-upload" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"fileBase64\": \"data:image/png;base64,$IMAGE_BASE64\",
+    \"uploadPath\": \"veo3-products\",
+    \"fileName\": \"h2o-pure-product.png\"
+  }" | jq -r '.data.fileUrl')
 
-# Check status
-python3 scripts/veo3_generate.py status --campaign h2o-pure
+echo "Product image uploaded to: $IMAGE_URL"
+
+# Step B: Generate with product (ACTION prompt, not description)
+TASK_ID=$(curl -s -X POST "https://api.kie.ai/api/v1/veo/generate" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"prompt\": \"Weathered hands carefully rotating this product to show label\",
+    \"imageUrls\": [\"$IMAGE_URL\"],
+    \"model\": \"veo3_fast\",
+    \"aspectRatio\": \"16:9\",  # PREVENTS 9:16 default
+    \"enableFallback\": true
+  }" | jq -r '.data.taskId')
+
+echo "Generation started: $TASK_ID"
+
+# 3. CHECK STATUS (wait 10-15 minutes)
+curl -X GET "https://api.kie.ai/api/v1/veo/record-info?taskId=$TASK_ID" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" | jq '.data.response.resultUrls[0]'
+
+# 4. DOWNLOAD VIDEO when ready
+VIDEO_URL=$(curl -s -X GET "https://api.kie.ai/api/v1/veo/record-info?taskId=$TASK_ID" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" | jq -r '.data.response.resultUrls[0]')
+
+curl -L -o "scene_output.mp4" "$VIDEO_URL"
+```
+
+### Batch Campaign Generation (7 scenes MAX for 60-second limit)
+
+```bash
+# Generate all scenes with proper product handling
+# CRITICAL: 7 scenes × 8s = 56s (under 60s platform limit)
+for scene in 1 2 3 4 5 6 7; do
+  # Scenes 3,4,5,6 show product (example)
+  if [[ $scene =~ [3456] ]]; then
+    echo "Scene $scene: Using image-to-video (product visible)"
+    # Use image-to-video commands above
+  else
+    echo "Scene $scene: Using text-to-video (no product)"
+    # Use text-to-video commands above
+  fi
+done
 ```
 
 ### Kie.ai File Upload API (CRITICAL for Image-to-Video)
 
-**IMPORTANT**: Always use Kie.ai's native File Upload API instead of third-party services.
+**IMPORTANT**: Always use Kie.ai's native File Upload API with bash/curl commands.
 
-```python
+```bash
 # File Upload Endpoints
-KIE_FILE_UPLOAD = {
-    "base64": "https://api.kie.ai/api/file-base64-upload",     # ≤1MB files
-    "stream": "https://api.kie.ai/api/file-stream-upload",     # 1-100MB files
-    "url": "https://api.kie.ai/api/file-url-upload"           # Remote URLs
-}
+BASE64_UPLOAD="https://api.kie.ai/api/file-base64-upload"  # ≤1MB files
+STREAM_UPLOAD="https://api.kie.ai/api/file-stream-upload"  # 1-100MB files
+URL_UPLOAD="https://api.kie.ai/api/file-url-upload"         # Remote URLs
 
-# Upload Strategy by File Size
-def select_upload_method(file_path_or_url):
-    if file_path_or_url.startswith('http'):
-        return 'url'  # Use URL upload for remote files
+# Check file size and select upload method
+FILE_PATH="/path/to/product.png"
+FILE_SIZE=$(stat -f%z "$FILE_PATH" 2>/dev/null || stat -c%s "$FILE_PATH")
+FILE_SIZE_MB=$((FILE_SIZE / 1048576))
 
-    file_size_mb = os.path.getsize(file_path_or_url) / (1024*1024)
-    if file_size_mb <= 1:
-        return 'base64'  # Best for small files
-    else:
-        return 'stream'  # Best for larger files
+if [ "$FILE_SIZE_MB" -le 1 ]; then
+  # Base64 Upload for files ≤1MB
+  IMAGE_BASE64=$(base64 -w0 "$FILE_PATH" 2>/dev/null || base64 "$FILE_PATH")
+  IMAGE_URL=$(curl -s -X POST "$BASE64_UPLOAD" \
+    -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"fileBase64\": \"data:image/png;base64,$IMAGE_BASE64\",
+      \"uploadPath\": \"veo3-images\",
+      \"fileName\": \"product.png\"
+    }" | jq -r '.data.fileUrl')
+else
+  # Stream Upload for files >1MB
+  IMAGE_URL=$(curl -s -X POST "$STREAM_UPLOAD" \
+    -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+    -F "file=@$FILE_PATH" \
+    -F "uploadPath=veo3-images" \
+    -F "fileName=product.png" | jq -r '.data.fileUrl')
+fi
 
-# Base64 Upload Example (≤1MB)
-response = requests.post(
-    KIE_FILE_UPLOAD['base64'],
-    headers={'Authorization': f'Bearer {KIE_API_KEY}'},
-    json={
-        'fileBase64': f"data:image/png;base64,{base64_data}",
-        'uploadPath': 'veo3-images',
-        'fileName': 'product.png'
-    }
-)
-
-# File Stream Upload Example (>1MB)
-with open(file_path, 'rb') as f:
-    response = requests.post(
-        KIE_FILE_UPLOAD['stream'],
-        headers={'Authorization': f'Bearer {KIE_API_KEY}'},
-        files={'file': f},
-        data={
-            'uploadPath': 'veo3-images',
-            'fileName': 'product.png'
-        }
-    )
-
-# URL Upload Example (Remote Files)
-response = requests.post(
-    KIE_FILE_UPLOAD['url'],
-    headers={'Authorization': f'Bearer {KIE_API_KEY}'},
-    json={
-        'fileUrl': 'https://example.com/image.png',
-        'uploadPath': 'veo3-images',
-        'fileName': 'product.png'
-    }
-)
+# URL Upload for remote files
+REMOTE_URL="https://example.com/image.png"
+IMAGE_URL=$(curl -s -X POST "$URL_UPLOAD" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"fileUrl\": \"$REMOTE_URL\",
+    \"uploadPath\": \"veo3-images\",
+    \"fileName\": \"product.png\"
+  }" | jq -r '.data.fileUrl')
 ```
 
 **Key Points**:
@@ -254,25 +345,19 @@ response = requests.post(
 - Integrated with Kie.ai ecosystem
 - Supports up to 100MB files
 
-### API Implementation Details
-```python
-import requests
-
-# Simple generation
-response = requests.post(
-    "https://api.kie.ai/api/v1/veo/generate",
-    headers={
-        'Authorization': f'Bearer {KIE_API_KEY}',
-        'Content-Type': 'application/json'
-    },
-    json={
-        "prompt": "Your video description",
-        "model": "veo3_fast",  # $0.38 for testing
-        "aspectRatio": "16:9",
-        "enableFallback": True,
-        "enableTranslation": True
-    }
-)
+### API Implementation with Bash
+```bash
+# Simple generation with curl
+curl -X POST "https://api.kie.ai/api/v1/veo/generate" \
+  -H "Authorization: Bearer 20108f4bba626227a1bb5e281d1e5a64" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Your video description",
+    "model": "veo3_fast",
+    "aspectRatio": "16:9",
+    "enableFallback": true,
+    "enableTranslation": true
+  }'
 
 # Response: {"code": 200, "data": {"taskId": "xxx"}}
 ```
@@ -301,38 +386,29 @@ response = requests.post(
 - Success patterns discovered
 
 ### Quality Gate Process:
-```python
-def quality_gate_check(prompt, quality_score):
-    """
-    Enforce quality standards before generation
-    """
-    if quality_score < 8:
-        return {
-            "status": "REJECTED",
-            "reason": "Quality score below minimum (8/10)",
-            "score": quality_score,
-            "action": "Return to prompt architect for revision"
-        }
+```bash
+# Quality gate enforcement before generation
+QUALITY_SCORE=7.5  # Example score from review
 
-    # Additional technical checks
-    required_elements = [
-        "imperfections", "camera_lens", "aperture",
-        "exposure_ratio", "atmospheric", "color_distribution"
-    ]
+if (( $(echo "$QUALITY_SCORE < 8" | bc -l) )); then
+  echo "REJECTED: Quality score $QUALITY_SCORE below minimum (8/10)"
+  echo "Action: Return to prompt architect for revision"
+  exit 1
+fi
 
-    for element in required_elements:
-        if element not in prompt:
-            return {
-                "status": "REJECTED",
-                "reason": f"Missing critical element: {element}",
-                "action": "Add required technical specifications"
-            }
+# Check for required technical elements
+PROMPT="Your prompt text here"
+REQUIRED_ELEMENTS=("pores" "lens" "aperture" "exposure" "atmospheric" "dust")
 
-    return {
-        "status": "APPROVED",
-        "score": quality_score,
-        "proceed": True
-    }
+for element in "${REQUIRED_ELEMENTS[@]}"; do
+  if [[ ! "$PROMPT" =~ $element ]]; then
+    echo "REJECTED: Missing critical element: $element"
+    echo "Action: Add required technical specifications"
+  fi
+done
+
+echo "APPROVED: Quality score $QUALITY_SCORE meets requirements"
+echo "Proceed with generation"
 ```
 
 ## Report / Response
@@ -400,19 +476,35 @@ Provide your analysis and implementation in this structured format:
 - **Allow 10-15 minutes** for video generation
 - **Native 9:16 support** - no cropping needed for vertical
 - **Use image-to-video** when exact product representation crucial
-- **Main script**: `/scripts/veo3_generate.py` (unified generator)
-- **Legacy helper**: `/scripts/veo3_image.py` (if needed)
-- **Campaign prompts**: `/production-plans/[campaign]/prompts/final-prompts.json`
-- **Task tracking**: `/production-plans/[campaign]/tasks/` or `/data/`
+- **Campaign prompts**: Save to `/production-plans/[campaign]/prompts/final-prompts.json`
+- **Task tracking**: Auto-saved to `/production-plans/[campaign]/tasks/` or `/data/`
+- **All generation**: Use self-contained bash/curl commands (NO external scripts)
 
-### Common Issues & Solutions
+### Critical Issues SOLVED
+
+| Problem | Root Cause | Solution |
+|---------|------------|----------|
+| **Wrong product shown** | Not using product image | ALWAYS use image-to-video for product scenes |
+| **Wrong aspect ratio (9:16)** | Default override | ALWAYS specify "aspectRatio": "16:9" |
+| **Short videos (32s)** | Minimal scene planning | Standard 7 scenes MAX for 60 seconds |
+| **Audio cutoff** | Narration in generation | NO narration, post-production only |
+| **External script dependency** | Fragmented workflow | Self-contained bash commands |
+
+### Product Scene Decision Tree
+```bash
+if [scene shows product] || [scene mentions product]; then
+  USE image-to-video with actual product image
+  PROMPT = "what to DO with product" (not description)
+else
+  USE text-to-video
+  PROMPT = full scene description
+fi
+```
+
+### Remaining Technical Notes
 - Status endpoints may return 404 - use dashboard or callbacks
 - Videos take 10-15 mins - plan accordingly
-- Fallback only works with 16:9 aspect ratio
 - English prompts work best (auto-translation available)
-- Audio cutoff - keep dialogue under 25 words
-- Wrong product shown - use image-to-video with actual product image
-- Voice inconsistency - same descriptor helps but not guaranteed
 
 ## Quality Metrics Tracking
 

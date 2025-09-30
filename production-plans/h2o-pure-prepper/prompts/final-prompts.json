@@ -1,104 +1,147 @@
 {
-  "campaign": "H2O Pure - Prepper Community",
-  "target_audience": "Preppers (practical, skeptical, family-focused)",
-  "emotional_journey": "Vulnerability → Recognition → Confidence",
-  "key_message": "Backup for your backup - simple, proven, American-made",
-  "tone": "Authentic, documentary-style, trusted neighbor",
-  "platform": "YouTube/Facebook/Prepper Communities",
-  "total_duration": "32 seconds",
-  "segments": 4,
-  "technical_specs": {
-    "lens": "50mm primary (natural perspective)",
-    "aperture": "F4-F5.6 (balanced sharpness)",
-    "movement": "Mostly static, some handheld",
-    "lighting": "2:1 exposure ratio, natural sources",
-    "colors": "60% earth tones, 30% functional colors, 10% safety accents",
-    "aspect_ratio": "9:16",
-    "audio_strategy": "NO NARRATION - post-production voiceover only"
-  },
+  "campaign": "H2O Pure for Preppers",
+  "total_duration": "56 seconds",
+  "segments": 7,
+  "emotional_journey": "Vulnerable → Confident",
+  "target_audience": "Emergency-conscious families, 30-55",
+  "aspect_ratio": "16:9",
   "scenes": [
     {
-      "name": "Scene 1 - Reality Check",
+      "name": "Scene 1 - The Vulnerability",
       "segment": 1,
       "duration": "0:00-0:08",
+      "generation_method": "text-to-video",
+      "requires_product_image": false,
+      "aspect_ratio": "16:9",
       "continuation": "standalone",
-      "emotional_beat": "Vulnerability - recognizing the gap",
-      "prompt": "A weathered middle-aged man with calloused hands and visible pores kneels beside a murky creek in golden hour light, wearing a faded flannel shirt with rolled sleeves and slight sweat stains. His graying beard shows individual hairs catching the warm 2:1 exposure ratio sunlight filtering through trees, creating soft volumetric rays in the humid air with floating dust particles. He cups the questionable water in his work-worn hands, examining it with a concerned expression as his brow furrows with natural skin texture and worry lines. Shot on 50mm lens at F4 aperture from eye-level angle with slight handheld movement, capturing the authentic moment of a practical man facing water uncertainty. The scene features 60% warm earth tones from the forest setting, 30% muted greens from foliage, and 10% golden accent light on his weathered skin. Ambient forest sounds of flowing water and distant birds fill the natural environment (no subtitles). Avoid perfect lighting, artificial poses, unrealistic skin, or staged scenarios.",
-      "imperfections": "Calloused hands, visible pores, sweat stains, individual beard hairs, natural worry lines",
-      "camera_specs": "50mm lens, F4 aperture, eye-level, handheld movement",
-      "lighting": "2:1 exposure ratio, golden hour sunlight, volumetric rays, dust particles",
-      "color_palette": "60% earth tones, 30% muted greens, 10% golden accents"
+      "prompt": "A weathered father in his early 40s sits at a worn wooden kitchen table during golden hour, stress lines etched around his tired brown eyes, visible pores across his forehead glistening with a thin layer of perspiration, a few gray strands breaking free from his otherwise neat dark hair as he stares down at scattered emergency supply lists and water storage calculations written on crumpled notebook paper. The background reveals a modest suburban kitchen with outdated appliances, dust particles floating lazily through warm volumetric sunlight streaming through a west-facing window, casting long shadows across vintage linoleum flooring. His calloused hands with pronounced knuckle creases slowly flip through pages while his shoulders carry the weight of family responsibility, wearing a faded navy blue work shirt with subtle wrinkles around the collar and sleeves. Shot with 50mm lens at F2.8 aperture using a slow dolly-in movement from a slightly elevated angle, creating intimate vulnerability. Lighting maintains a 2:1 exposure ratio with natural key light from the window and soft ambient fill, enhanced by floating dust motes and gentle atmospheric haze. The color palette features 60% warm earth tones from wood and paper, 30% cool blue shadows, and 10% golden accent light. Ambient kitchen sounds include distant suburban traffic, a ticking wall clock, and the soft rustle of turning pages (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "50mm", "aperture": "F2.8", "movement": "slow dolly-in", "angle": "slightly elevated"},
+        "lighting": {"ratio": "2:1", "key": "natural window light", "atmosphere": "dust particles, haze"},
+        "color": {"dominant": "warm earth tones 60%", "secondary": "cool blue shadows 30%", "accent": "golden light 10%"},
+        "imperfections": ["stress lines", "visible pores", "perspiration", "gray strands", "calloused hands", "shirt wrinkles"]
+      },
+      "negative_instructions": "avoid subtitles, narration voice, unrealistic skin, perfect lighting, sterile environments, distracting background elements, oversaturated colors"
     },
     {
-      "name": "Scene 2 - The Solution",
+      "name": "Scene 2 - The Research",
       "segment": 2,
       "duration": "0:08-0:16",
-      "continue_from": "Scene 1",
-      "use_last_frame": false,
-      "prompt_similarity": "15% - new environment",
-      "emotional_beat": "Recognition - discovering the backup",
-      "prompt": "The same weathered man with calloused hands and visible pores now stands in his well-organized garage workshop, fluorescent lighting creating a 2:1 exposure ratio against the concrete walls. He wears the same faded flannel with rolled sleeves, now examining his water storage setup with mason jars, camping gear, and emergency supplies visible on metal shelving. His work-worn fingers with dirt under the nails reach toward a small blue H2O Pure bottle on the workbench, surrounded by practical prepping supplies. Shot on 50mm lens at F4.5 aperture from slightly low angle with static camera positioning, emphasizing his methodical approach to preparedness. The scene features 60% industrial gray and beige tones from the garage environment, 30% functional silver and black from tools and equipment, and 10% blue safety accents from the product. Ambient garage sounds of distant ventilation and subtle equipment hums fill the practical workspace (no subtitles). Avoid perfect organization, pristine conditions, or commercial staging.",
-      "imperfections": "Calloused hands, dirt under nails, worn flannel, concrete floor imperfections",
-      "camera_specs": "50mm lens, F4.5 aperture, slightly low angle, static positioning",
-      "lighting": "2:1 exposure ratio, fluorescent lighting, industrial environment",
-      "color_palette": "60% industrial gray/beige, 30% functional silver/black, 10% blue accents"
+      "generation_method": "text-to-video",
+      "requires_product_image": false,
+      "aspect_ratio": "16:9",
+      "continuation": "new_shot",
+      "prompt": "Close-up macro shot of the same father's weathered hands with pronounced knuckle texture and subtle age spots carefully highlighting text on a water purification research printout, his index finger bearing a small healing cut from recent work tracing along technical specifications while natural reading glasses with minor scratches rest on his nose bridge. The background shows additional scattered papers with emergency preparedness charts, a laptop screen glowing with supplier websites, and coffee rings staining the wooden table surface. Stray overhead lighting creates gentle shadows between his fingers while his concentrated breathing creates subtle shirt movement. Shot with 100mm macro lens at F4 aperture using a static handheld position from a low angle to emphasize focus and determination. Lighting employs a 4:1 exposure ratio with harsh overhead fluorescent key light creating dramatic finger shadows and warm laptop screen fill, punctuated by floating paper dust and subtle heat distortion from the warm laptop. The color palette showcases 60% muted document whites and grays, 30% warm amber laptop glow, and 10% cool blue fluorescent accents. Ambient office sounds include laptop fan humming, paper rustling, and distant household activity (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "100mm macro", "aperture": "F4", "movement": "static handheld", "angle": "low angle"},
+        "lighting": {"ratio": "4:1", "key": "harsh overhead fluorescent", "atmosphere": "paper dust, heat distortion"},
+        "color": {"dominant": "muted whites/grays 60%", "secondary": "warm amber glow 30%", "accent": "cool blue fluorescent 10%"},
+        "imperfections": ["knuckle texture", "age spots", "healing cut", "scratched glasses", "coffee stains", "shirt movement"]
+      },
+      "negative_instructions": "avoid perfect hands, sterile documents, unrealistic lighting, distracting text, oversaturated colors, narration voice"
     },
     {
-      "name": "Scene 3 - Product Demonstration",
+      "name": "Scene 3 - The Discovery",
       "segment": 3,
       "duration": "0:16-0:24",
-      "continuation": "image-to-video",
-      "use_product_image": true,
-      "image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
-      "emotional_beat": "Understanding - seeing how simple it is",
-      "prompt": "Show weathered hands with visible calluses and pores carefully holding the H2O Pure bottle, demonstrating the compact size by rotating it slowly in natural workshop lighting with 2:1 exposure ratio. The hands show work-worn texture with dirt traces under the fingernails and slightly rough skin, emphasizing the practical nature of the user. Gentle movement as fingers trace the product label, highlighting the key information: treats 15 gallons, 8 drops per gallon, made in USA. Shot on 50mm lens at F5.6 aperture with macro-style framing, slight handheld movement for authentic feel. Atmospheric dust particles float in the workshop air with subtle shadows and natural imperfections on the workbench surface. The scene maintains 60% neutral workshop tones, 30% skin tone and clothing colors, and 10% product blue accents for clear visibility. Ambient workshop sounds with subtle bottle handling audio (no subtitles). Avoid perfect hands, studio lighting, or artificial presentation.",
-      "imperfections": "Callused hands, dirt under nails, rough skin texture, workbench wear",
-      "camera_specs": "50mm lens, F5.6 aperture, macro framing, slight handheld movement",
-      "lighting": "2:1 exposure ratio, natural workshop lighting, dust particles",
-      "color_palette": "60% neutral workshop tones, 30% skin/clothing, 10% product blue"
+      "generation_method": "image-to-video",
+      "requires_product_image": true,
+      "product_image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
+      "aspect_ratio": "16:9",
+      "continuation": "new_shot",
+      "prompt": "Weathered masculine hands with calloused palms and visible knuckle creases carefully lift this compact water purification solution from an opened shipping box filled with protective packaging materials, fingers showing natural tremor from anticipation as he rotates the product to examine its construction quality. The background reveals his home office workspace with scattered emergency preparedness research, dim afternoon lighting filtering through partially closed blinds creating dramatic side-lighting across his forearms showing fine arm hair and skin texture variations. His breathing creates subtle chest movement beneath a worn cotton t-shirt with faded fabric patterns while concentration furrows deepen across his brow. Shot with 85mm lens at F2.8 aperture using a slow push-in movement from eye-level angle to capture the intimate discovery moment. Lighting maintains a 4:1 exposure ratio with natural window key light creating strong shadows and warm ambient fill, enhanced by floating dust particles disturbed from the packaging and subtle atmospheric haze. The color palette features 60% neutral packaging browns and cardboard textures, 30% warm skin tones and wood surfaces, and 10% cool blue window light accents. Ambient sounds include cardboard rustling, package crinkling, and muffled neighborhood sounds (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "85mm", "aperture": "F2.8", "movement": "slow push-in", "angle": "eye-level"},
+        "lighting": {"ratio": "4:1", "key": "natural window side-light", "atmosphere": "package dust, atmospheric haze"},
+        "color": {"dominant": "neutral browns/cardboard 60%", "secondary": "warm skin/wood tones 30%", "accent": "cool blue window light 10%"},
+        "imperfections": ["calloused palms", "knuckle creases", "natural tremor", "arm hair", "skin texture", "faded fabric"]
+      },
+      "negative_instructions": "avoid product description, perfect hands, sterile packaging, unrealistic lighting, oversaturated colors, narration voice"
     },
     {
-      "name": "Scene 4 - Confidence & Trust",
+      "name": "Scene 4 - The Examination",
       "segment": 4,
       "duration": "0:24-0:32",
-      "continue_from": "Scene 2",
-      "use_last_frame": false,
-      "prompt_similarity": "85% - same garage environment",
-      "emotional_beat": "Confidence - the trusted backup solution",
-      "prompt": "The weathered man with calloused hands and visible pores now confidently places the small H2O Pure bottle into his organized emergency kit in the same garage workshop, fluorescent lighting maintaining the 2:1 exposure ratio. His expression shows quiet satisfaction and preparedness as he adjusts other supplies around it - first aid kit, water containers, and practical gear on metal shelving. The worn flannel shirt and work-hardened hands demonstrate his authentic lifestyle, with natural skin texture and individual facial hairs visible in the practical lighting. Shot on 50mm lens at F4.5 aperture from eye-level angle with subtle pan movement following his methodical organization. The scene features the same 60% industrial gray and beige garage tones, 30% functional equipment colors, and 10% safety blue accents from the product now integrated into his preparedness system. Ambient garage atmosphere with subtle sounds of organization and distant ventilation (no subtitles). Avoid commercialized presentation, perfect conditions, or unrealistic staging.",
-      "imperfections": "Calloused hands, visible pores, worn flannel, natural facial hair texture",
-      "camera_specs": "50mm lens, F4.5 aperture, eye-level, subtle pan movement",
-      "lighting": "2:1 exposure ratio, fluorescent workshop lighting, practical environment",
-      "color_palette": "60% industrial gray/beige, 30% functional colors, 10% safety blue"
+      "generation_method": "image-to-video",
+      "requires_product_image": true,
+      "product_image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
+      "aspect_ratio": "16:9",
+      "continuation": "similar_scene",
+      "prompt": "The same father's experienced hands with pronounced thumb calluses and slightly discolored fingernails from outdoor work slowly rotate this water purification solution closer to his reading glasses, squinting eyes with crow's feet and natural bags showing intense concentration as he studies the technical specifications while natural light reflects off the product surface. His salt-and-pepper beard shows individual gray whiskers catching afternoon light, with worry lines softening into cautious optimism around his brown eyes that display small red capillaries from recent stress. The background maintains the same home office setting with research papers now partially organized, late afternoon sunlight creating longer shadows across his workspace. Shot with 85mm lens at F1.4 aperture using a subtle dolly-right movement from a slightly low angle to emphasize his growing confidence. Lighting employs a 2:1 exposure ratio with warm golden hour key light from the window and gentle bounce fill from white papers, punctuated by dust motes dancing in volumetric light rays and subtle lens flare. The color palette showcases 60% warm golden hour tones, 30% neutral product and paper colors, and 10% cool shadow accents. Ambient sounds include gentle paper shuffling, distant birdsong through the window, and his measured breathing (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "85mm", "aperture": "F1.4", "movement": "subtle dolly-right", "angle": "slightly low"},
+        "lighting": {"ratio": "2:1", "key": "warm golden hour window", "atmosphere": "dust motes, volumetric rays, lens flare"},
+        "color": {"dominant": "warm golden tones 60%", "secondary": "neutral product/paper 30%", "accent": "cool shadows 10%"},
+        "imperfections": ["thumb calluses", "discolored nails", "crow's feet", "eye bags", "gray whiskers", "red capillaries"]
+      },
+      "negative_instructions": "avoid product marketing copy, perfect skin, studio lighting, unrealistic colors, narration voice, subtitles"
+    },
+    {
+      "name": "Scene 5 - The Validation",
+      "segment": 5,
+      "duration": "0:32-0:40",
+      "generation_method": "image-to-video",
+      "requires_product_image": true,
+      "product_image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
+      "aspect_ratio": "16:9",
+      "continuation": "new_angle",
+      "prompt": "Strong masculine hands with work-hardened knuckles and visible scars from years of manual labor confidently demonstrate this compact water purification solution's portability by testing its weight distribution in his palm, fingers naturally curling around the form factor while his thumb traces the activation mechanism with practiced precision. His face shows the first genuine smile in hours, stress lines beginning to relax around his eyes that now display renewed hope rather than anxiety, while natural perspiration on his forehead catches warm kitchen lighting. The background shifts to his family kitchen where emergency supply lists are now organized into neat piles, suggesting progress and planning, with warm evening light streaming through clean windows. His posture straightens with growing confidence, shoulders no longer bearing the same heavy burden. Shot with 50mm lens at F2.8 aperture using a smooth tracking shot from a three-quarter angle to capture both hands and facial expression simultaneously. Lighting maintains a 2:1 exposure ratio with warm kitchen pendant light as key source and natural window fill, enhanced by golden hour atmosphere and subtle heat shimmer from cooking surfaces. The color palette features 60% warm kitchen wood tones and brass fixtures, 30% soft skin tones and fabric textures, and 10% bright accent highlights from metallic surfaces. Ambient kitchen sounds include gentle cabinet settling, distant family conversation, and his satisfied exhale (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "50mm", "aperture": "F2.8", "movement": "smooth tracking", "angle": "three-quarter"},
+        "lighting": {"ratio": "2:1", "key": "warm pendant light", "atmosphere": "golden hour, heat shimmer"},
+        "color": {"dominant": "warm wood/brass 60%", "secondary": "soft skin/fabric 30%", "accent": "metallic highlights 10%"},
+        "imperfections": ["work-hardened knuckles", "visible scars", "natural perspiration", "relaxing stress lines", "shoulder tension"]
+      },
+      "negative_instructions": "avoid product advertising language, perfect demonstrations, sterile environments, unrealistic reactions, narration voice"
+    },
+    {
+      "name": "Scene 6 - The Confidence",
+      "segment": 6,
+      "duration": "0:40-0:48",
+      "generation_method": "image-to-video",
+      "requires_product_image": true,
+      "product_image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
+      "aspect_ratio": "16:9",
+      "continuation": "emotional_progression",
+      "prompt": "The father's weathered hands with renewed steadiness carefully place this water purification solution into a well-organized emergency kit beside other carefully selected supplies, his movements now deliberate and confident rather than frantic, wedding ring catching warm light as he arranges items with methodical precision. His face displays genuine relief and satisfaction, the deep worry lines around his eyes transformed into determination wrinkles, while his breathing has become calm and measured, chest rising and falling rhythmically beneath a clean button-down shirt he changed into after his research session. The background shows his transformed workspace where chaotic research papers have been replaced by neatly organized emergency preparedness binders and supply lists, warm evening light creating a sense of accomplishment and security. His posture radiates quiet confidence, shoulders squared with newfound resolve. Shot with 35mm lens at F4 aperture using a slow dolly-out movement from a low angle to emphasize his restored authority and control. Lighting employs a 2:1 exposure ratio with warm table lamp key light and soft ceiling bounce fill, enhanced by golden hour window light and subtle dust particles settling peacefully. The color palette showcases 60% warm wood and leather emergency kit tones, 30% clean white shirt and organized paper colors, and 10% golden accent light from brass lamp fixtures. Ambient sounds include gentle kit closure, organized paper stacking, and the satisfied sound of his deep, calm breathing (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "35mm", "aperture": "F4", "movement": "slow dolly-out", "angle": "low angle"},
+        "lighting": {"ratio": "2:1", "key": "warm table lamp", "atmosphere": "golden hour, settling dust"},
+        "color": {"dominant": "warm wood/leather 60%", "secondary": "clean white/paper 30%", "accent": "golden brass 10%"},
+        "imperfections": ["weathered hands", "wedding ring wear", "determination wrinkles", "natural breathing", "shirt collar wear"]
+      },
+      "negative_instructions": "avoid perfect organization, unrealistic transformations, sterile environments, marketing messaging, narration voice"
+    },
+    {
+      "name": "Scene 7 - The Resolution",
+      "segment": 7,
+      "duration": "0:48-0:56",
+      "generation_method": "image-to-video",
+      "requires_product_image": true,
+      "product_image_path": "/home/dev/Projects/ai-video-gen/images/6mL H2O Pure_square.png",
+      "aspect_ratio": "16:9",
+      "continuation": "triumphant_conclusion",
+      "prompt": "Strong, assured hands with visible calluses and healed work scars confidently secure this compact water purification solution in the final position within a comprehensive family emergency kit, fingers moving with practiced efficiency while his wedding ring reflects warm evening light, symbolizing protection of family bonds. His face shows complete transformation from earlier anxiety to genuine peace of mind, crow's feet now forming from a genuine smile rather than stress squinting, while his brown eyes display clear focus and paternal protection rather than fear. The background reveals a completely organized family preparation area with emergency supplies neatly arranged and labeled, warm golden hour light streaming through clean windows suggesting hope and security, with family photos visible in soft focus showing what he's protecting. His entire demeanor radiates quiet strength and preparedness, shoulders relaxed but alert, breathing steady and confident. Shot with 35mm lens at F2.8 aperture using a final slow pull-back movement from eye-level angle to reveal the scope of his preparation and protection. Lighting maintains a 2:1 exposure ratio with warm golden hour window light as primary key and soft ambient fill from white walls, enhanced by peaceful dust motes floating gently and warm atmospheric glow. The color palette features 60% warm golden evening tones throughout the space, 30% clean neutral emergency supply colors, and 10% bright metallic accents from organized containers. Ambient sounds include the final satisfying click of kit closure, gentle evening breeze through windows, and his deep, peaceful exhale of accomplishment (no subtitles).",
+      "technical_specs": {
+        "camera": {"lens": "35mm", "aperture": "F2.8", "movement": "slow pull-back", "angle": "eye-level"},
+        "lighting": {"ratio": "2:1", "key": "golden hour window", "atmosphere": "peaceful dust motes, warm glow"},
+        "color": {"dominant": "warm golden tones 60%", "secondary": "clean neutral supplies 30%", "accent": "bright metallic containers 10%"},
+        "imperfections": ["visible calluses", "healed scars", "wedding ring wear", "crow's feet", "natural breathing patterns"]
+      },
+      "negative_instructions": "avoid perfect endings, unrealistic transformations, sterile organization, marketing language, narration voice, subtitles"
     }
   ],
-  "post_production_notes": {
-    "voiceover_script": "When your main water source fails, you need a backup for your backup. H2O Pure - 8 drops treats a gallon. Simple. Proven. American-made. Because being prepared isn't paranoid, it's practical.",
-    "voiceover_timing": [
-      "0:00-0:08: 'When your main water source fails...'",
-      "0:08-0:16: 'you need a backup for your backup.'",
-      "0:16-0:24: 'H2O Pure - 8 drops treats a gallon.'",
-      "0:24-0:32: 'Simple. Proven. American-made.'"
-    ],
-    "audio_strategy": "Use authentic male voice, slightly gravelly, trustworthy neighbor tone. Add subtle workshop/outdoor ambiance."
+  "campaign_notes": {
+    "emotional_arc": "Progresses from vulnerable anxiety (scenes 1-2) through discovery and validation (scenes 3-5) to confident resolution (scenes 6-7)",
+    "technical_consistency": "Maintains 16:9 aspect ratio, realistic imperfections, and atmospheric lighting throughout",
+    "product_integration": "Scenes 3-7 use image-to-video with action-focused prompts, not product descriptions",
+    "audio_strategy": "No narration in generation - professional voiceover to be added in post-production",
+    "quality_validation": "All prompts include 11 mandatory components with technical specifications"
   },
-  "quality_assessment": {
-    "technical_completeness": 10,
-    "realism_elements": 10,
-    "creative_alignment": 9,
-    "platform_optimization": 9,
-    "overall_score": 9.5,
-    "notes": "Strong alignment with prepper values, authentic imperfections, proper technical specs. Scene 3 uses product image for accuracy."
-  },
-  "scene_continuation_strategy": {
-    "flow": "Creek → Garage → Product → Organized Kit",
-    "transitions": "Natural progression from problem to solution to implementation",
-    "85_15_rule_applied": "Scenes 2 and 4 share 85% similar garage environment with different actions"
-  },
-  "generation_commands": [
-    "python3 scripts/veo3_generate.py generate --prompt 'Scene 1 prompt' --campaign h2o-pure-prepper",
-    "python3 scripts/veo3_generate.py generate --prompt 'Scene 2 prompt' --campaign h2o-pure-prepper",
-    "python3 scripts/veo3_generate.py generate --prompt 'Scene 3 prompt' --image /home/dev/Projects/ai-video-gen/images/6mL\\ H2O\\ Pure_square.png --campaign h2o-pure-prepper",
-    "python3 scripts/veo3_generate.py generate --prompt 'Scene 4 prompt' --campaign h2o-pure-prepper"
-  ]
+  "generation_commands": {
+    "text_to_video_scenes": [1, 2],
+    "image_to_video_scenes": [3, 4, 5, 6, 7],
+    "batch_processing_order": "Sequential 1-7 for emotional continuity",
+    "estimated_total_cost": "$2.66 (2 × $0.38 + 5 × $0.38 for fast generation)"
+  }
 }

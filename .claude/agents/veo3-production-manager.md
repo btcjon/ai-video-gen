@@ -1,7 +1,7 @@
 ---
 name: veo3-production-manager
 description: Use proactively for orchestrating complete VEO 3 video production workflows including multi-video campaigns, character consistency management, batch processing, and production pipeline coordination. Essential for complex video projects requiring systematic organization and quality control.
-tools: Read, Write, Edit, MultiEdit, Glob, Grep, Bash, TodoWrite
+tools: *
 color: Purple
 ---
 
@@ -89,7 +89,18 @@ Then proceed to technical planning:
   * Motivated color shifts
 
 ### Phase 3: Scene Segmentation & Continuation Strategy
-- **Segment into 8-second chunks** for longer narratives
+
+**CRITICAL DURATION MATH**:
+```
+Platform Limits → Scene Count:
+- 60 seconds max → 7 scenes MAXIMUM (7×8s = 56s)
+- 30 seconds max → 4 scenes MAXIMUM (4×8s = 32s)
+- 15 seconds max → 2 scenes MAXIMUM (2×8s = 16s)
+
+NEVER exceed platform limits! Better 4 seconds under than 1 second over.
+```
+
+- **Segment into 8-second chunks** for all narratives
 - **Plan frame-to-frame continuations** for seamless flow
 - **Apply 85/15 Rule**: Keep 85% of prompt same, change 15% action
 - **Mark continuation points** vs new shot transitions
@@ -100,8 +111,8 @@ Then proceed to technical planning:
 3. **Pipeline Coordination**
    - Coordinate with veo3-prompt-architect for prompt generation
    - **SAVE ALL PROMPTS** to `/production-plans/[campaign]/prompts/final-prompts.json`
-   - Use unified `veo3_generate.py` script for all generation
-   - Execute batch generation: `python3 scripts/veo3_generate.py batch [campaign]`
+   - Use self-contained bash/curl commands for all generation
+   - Execute batch generation with bash loops and curl API calls
    - Track progress via dashboard: https://kie.ai/dashboard
    - Monitor task files in `/production-plans/[campaign]/tasks/`
 
@@ -133,14 +144,15 @@ Then proceed to technical planning:
 - Design workflows that accommodate both sequential narratives and parallel content creation
 - Prepare structured handoffs to post-production teams
 
-**Critical Production Rules:**
-- **NO NARRATION**: Voiceover added in post-production for perfect control
-- **CHARACTER DIALOGUE**: Maximum 10 words if characters speak on-screen
-- **IMAGE-TO-VIDEO**: Use `--image` flag with `veo3_generate.py` for products
-- **PROMPTS**: Single JSON file at `/production-plans/[campaign]/prompts/final-prompts.json`
-- **SCRIPTS**: Only 2 scripts - `veo3_generate.py` (main) and `veo3_image.py` (legacy)
-- **TASK TRACKING**: Automatic to `/production-plans/[campaign]/tasks/`
-- **VIDEO OUTPUT**: Download from Kie.ai dashboard when complete
+**v3.0 Critical Production Rules:**
+- **USER APPROVAL GATES**: Stop at checkpoints 1 & 2 for review
+- **PRODUCT CONSISTENCY**: Image-to-video MANDATORY for scenes 3-7
+- **IMAGE UPLOAD FIRST**: Product URL required before generation
+- **NO NARRATION**: Voiceover in post-production only
+- **COMPLETE PACKAGE**: Videos + script + assembly guide
+- **PROMPTS**: Draft first, then final after approval
+- **NO EXTERNAL SCRIPTS**: Self-contained bash/curl only
+- **TASK TRACKING**: Auto-save to `/production-plans/[campaign]/tasks/`
 
 **Specialized Workflows:**
 

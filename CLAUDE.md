@@ -7,6 +7,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a VEO 3 AI video generation platform specializing in commercial-grade video production using Google's VEO 3 model via Kie.ai's API integration. The project focuses on creating marketing videos with a 75% cost reduction compared to direct Google API usage.
 
+## ⚠️ CRITICAL WORKFLOW v3.0 - USER APPROVAL REQUIRED
+
+### Workflow Philosophy
+**"No Generation Without Validation, No Spending Without Approval"**
+
+### Major Issues SOLVED (v3.0):
+1. ✅ **Product Consistency ENFORCED**: Image-to-video MANDATORY for ALL product scenes
+2. ✅ **User Approval Gates**: TWO checkpoints before ANY generation
+3. ✅ **Complete Deliverables**: Videos + voiceover script + assembly guide
+4. ✅ **Aspect Ratio Lock**: Always "aspectRatio": "16:9"
+5. ✅ **Duration Compliance**: 7 scenes MAX = 56s (under 60s limit)
+
+### 🔴 CRITICAL: Product Generation Rules
+```bash
+# THIS IS NON-NEGOTIABLE
+if [scene contains/shows/mentions product]; then
+  # MUST upload product image first
+  # MUST use imageUrls parameter
+  # MUST focus prompt on ACTION not description
+  USE image-to-video WITH uploaded product URL
+else
+  USE text-to-video
+fi
+
+# NEVER use text-to-video for product scenes
+# NEVER describe product appearance in prompts
+# ALWAYS use "this product" not product name
+```
+
+### 🛑 Mandatory User Approval Checkpoints
+1. **After Creative Brief**: User reviews concept before prompts
+2. **Before Generation**: User sees ALL prompts, voiceover, costs
+3. **NO AUTONOMOUS GENERATION**: User must explicitly approve
+
 ## Key Commands
 
 ### Video Generation with Quality Gates
@@ -109,13 +143,43 @@ The project uses five specialized Claude Code agents working in sequence:
 
 ## Production Workflow
 
-### Creative-First Production Process
-1. **Creative Discovery FIRST**: No prompts without understanding intent
-2. **Technical Specs REQUIRED**: Camera lens, aperture, exposure ratios
-3. **Imperfections MANDATORY**: Pores, sweat, stray hair, atmosphere
-4. **Quality Score ENFORCED**: Minimum 8/10 or generation blocked
-5. **Scene Continuation**: 85/15 rule for connected segments
-6. **No Narration**: Post-production voiceover for control
+### v3.0 Production Workflow (USER-CONTROLLED)
+
+**Phase 1: Discovery** → 🛑 **USER REVIEW 1** → **Phase 2: Creative** → **Phase 3: Technical** → **Phase 4: Quality** → 🛑 **USER APPROVAL 2** → **Phase 5: Generation** → **Phase 6: Delivery**
+
+1. **User Approval Required**:
+   - STOP after creative brief for concept review
+   - STOP before generation for prompt/cost approval
+   - NO spending without explicit consent
+
+2. **Product Consistency ENFORCED**:
+   - Upload product image FIRST
+   - Scenes 3-7: MUST use imageUrls parameter
+   - Action prompts only ("lifting this product")
+
+3. **Duration Compliance**:
+   - 60s max = 7 scenes (7×8s = 56s)
+   - 30s max = 4 scenes (4×8s = 32s)
+   - NEVER exceed platform limits!
+
+4. **Complete Deliverables**:
+   - All videos in order
+   - Timed voiceover script
+   - Assembly instructions
+   - Music suggestions
+   - Export settings
+
+5. **Technical Excellence**:
+   - Camera specs (lens, aperture, movement)
+   - Lighting (exposure ratios, key light)
+   - Imperfections (pores, stray hair, wear)
+   - Atmosphere (dust, volumetric light)
+
+6. **Quality Gates**:
+   - Minimum 8/10 score required
+   - Product consistency verified
+   - Aspect ratio confirmed (16:9)
+   - No narration in generation
 
 ### Post-Production Audio Strategy
 - Generate videos WITHOUT narration
@@ -216,12 +280,15 @@ SCENE-CONTINUATION-GUIDE.md  # Frame continuation technique
 - Fallback only works with 16:9 aspect ratio
 - 1080p processing takes additional 1-2 minutes after 720p
 
-### Workflow Templates (NEW)
-- **Discovery**: `/docs/templates/discovery-interview-template.md`
+### Critical Workflow Documentation (v3.0)
+- **🔴 MASTER WORKFLOW**: `/docs/VEO3-USER-APPROVAL-WORKFLOW.md` - READ FIRST
+- **🔴 API IMPLEMENTATION**: `/docs/VEO3-CORRECT-API-IMPLEMENTATION.md` - Image-to-video guide
+- **🔴 WORKFLOW v3.0**: `/docs/VEO3-WORKFLOW-v3.md` - Complete overhaul
+- **60-Second Campaign**: `/docs/templates/60-second-campaign-template.md`
+- **Discovery Interview**: `/docs/templates/discovery-interview-template.md`
 - **Technical Specs**: `/docs/templates/technical-specification-sheet.md`
 - **Quality Review**: `/docs/templates/quality-review-checklist.md`
-- **Scoring**: `/docs/templates/prompt-scoring-rubric.md`
-- **Imperfections**: `/docs/templates/imperfection-library.md`
+- **Workflow Audit**: `/docs/WORKFLOW-AUDIT-AND-IMPROVEMENTS.md`
 
 ### Best Practices (Creative-First)
 - **Quick Start**: Read `VEO3-QUICK-START.md` for basics
