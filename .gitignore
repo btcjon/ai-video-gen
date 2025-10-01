@@ -10,6 +10,7 @@ __pycache__/
 
 # Output
 output/
+docs/output/
 *.mp4
 *.mov
 *.avi

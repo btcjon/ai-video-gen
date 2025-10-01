@@ -1,301 +1,94 @@
 # CLAUDE.md
-Today's Date: 9/26/25
+**AI Video Generation Platform - VEO 3 via Kie.ai**
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Project Purpose
 
-## Project Overview
+Frame-to-frame AI video generation for commercial marketing videos using Google's VEO 3 model via Kie.ai API (75% cost reduction vs direct Google API).
 
-This is a VEO 3 AI video generation platform specializing in commercial-grade video production using Google's VEO 3 model via Kie.ai's API integration. The project focuses on creating marketing videos with a 75% cost reduction compared to direct Google API usage.
+## Core Workflow
 
-## ⚠️ CRITICAL WORKFLOW v3.0 - USER APPROVAL REQUIRED
+**Frame-to-Frame Generation**: Each scene's ending frame becomes the next scene's starting image, ensuring perfect visual continuity across character, lighting, environment, and product.
 
-### Workflow Philosophy
-**"No Generation Without Validation, No Spending Without Approval"**
+**Critical Rule**: Read `/docs/frame-to-frame-video-workflow.md` first - contains 7 non-negotiable rules for success.
 
-### Major Issues SOLVED (v3.0):
-1. ✅ **Product Consistency ENFORCED**: Image-to-video MANDATORY for ALL product scenes
-2. ✅ **User Approval Gates**: TWO checkpoints before ANY generation
-3. ✅ **Complete Deliverables**: Videos + voiceover script + assembly guide
-4. ✅ **Aspect Ratio Lock**: Always "aspectRatio": "16:9"
-5. ✅ **Duration Compliance**: 7 scenes MAX = 56s (under 60s limit)
+## Scripts Used
 
-### 🔴 CRITICAL: Product Generation Rules
-```bash
-# THIS IS NON-NEGOTIABLE
-if [scene contains/shows/mentions product]; then
-  # MUST upload product image first
-  # MUST use imageUrls parameter
-  # MUST focus prompt on ACTION not description
-  USE image-to-video WITH uploaded product URL
-else
-  USE text-to-video
-fi
+This project uses global scripts from `/home/dev/.claude/scripts/`:
+- `kie_client.py` - VEO 3 video generation (primary)
+- `openai_image_client.py` - Image compositing for product integration
 
-# NEVER use text-to-video for product scenes
-# NEVER describe product appearance in prompts
-# ALWAYS use "this product" not product name
-```
-
-### 🛑 Mandatory User Approval Checkpoints
-1. **After Creative Brief**: User reviews concept before prompts
-2. **Before Generation**: User sees ALL prompts, voiceover, costs
-3. **NO AUTONOMOUS GENERATION**: User must explicitly approve
-
-## Key Commands
-
-### Video Generation with Quality Gates
-```bash
-# Generate a single video
-python3 scripts/veo3_generate.py generate --prompt "Your video idea"
-
-# Generate with quality score enforcement
-python3 scripts/veo3_generate.py generate \
-  --prompt "Your cinema-grade prompt" \
-  --quality-score 8.5
-
-# Generate with product image (now uses Kie.ai native upload)
-python3 scripts/veo3_generate.py generate \
-  --prompt "Show hands demonstrating this product" \
-  --image /images/product.png
-
-# Continue from previous scene (frame-to-video) - NEW
-python3 scripts/veo3_generate.py generate \
-  --prompt "85% similar prompt with action change" \
-  --continue-from [previous-task-id]
-
-# Generate entire campaign batch (now with auto-continuation)
-python3 scripts/veo3_generate.py batch h2o-pure
-
-# Check generation status
-python3 scripts/veo3_generate.py status --campaign h2o-pure
-```
-
-### Dashboard Access
-- Check generation status: https://kie.ai/dashboard
-- Videos typically complete in 10-15 minutes
-
-## Creative-First Architecture & Workflow
-
-### 7-Phase Creative Workflow (NEW)
-1. **Discovery & Intent** → Creative Director understands emotional goals
-2. **Research & Analysis** → Competitive landscape and USP discovery
-3. **Creative Planning** → Storyboarding and emotional journey mapping
-4. **Technical Specification** → Camera, lighting, imperfections planning
-5. **Prompt Engineering** → Transform vision into VEO 3 language
-6. **Quality Review** → Validate prompts score ≥8/10 before generation
-7. **Generation & Iteration** → Execute with quality gates
-
-### Five-Agent System (ENHANCED)
-The project uses five specialized Claude Code agents working in sequence:
-
-1. **veo3-creative-director** (`.claude/agents/veo3-creative-director.md`) - NEW
-   - Conducts discovery interviews to understand creative intent
-   - Creates emotional journey maps and success metrics
-   - Ensures every video has clear purpose before technical work
-
-2. **veo3-prompt-architect** (`.claude/agents/veo3-prompt-architect.md`)
-   - REQUIRES creative brief before creating any prompts
-   - Transforms ideas into cinema-grade VEO 3 prompts
-   - Includes ALL imperfections, camera specs, exposure ratios
-   - Uses 11-component structure from Essential Mastery Guide
-
-3. **veo3-production-manager** (`.claude/agents/veo3-production-manager.md`)
-   - Focuses on technical specifications (camera, lighting, color)
-   - Plans scene continuation strategy for longer content
-   - Ensures realism elements in every prompt
-
-4. **veo3-quality-review** (`.claude/agents/veo3-quality-review.md`) - NEW
-   - Validates every prompt before generation
-   - Scores on 4 criteria (min 8/10 required)
-   - Prevents costly regeneration through quality gates
-
-5. **veo3-api-optimizer** (`.claude/agents/veo3-api-optimizer.md`)
-   - ENFORCES quality gate (no generation if score <8/10)
-   - Contains Kie.ai API key: `20108f4bba626227a1bb5e281d1e5a64`
-   - Tracks quality metrics with generation results
-
-### API Integration Details
-
-**Kie.ai Endpoints:**
-- Generate: `POST https://api.kie.ai/api/v1/veo/generate`
-- Status: `GET https://api.kie.ai/api/v1/veo/record-info?taskId=XXX`
-- 1080p: `GET https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=XXX`
-
-**Request Structure:**
+**Import pattern**:
 ```python
-{
-    "prompt": "Your video description",
-    "model": "veo3_fast",  # or "veo3" for quality
-    "aspectRatio": "16:9",  # or "9:16" for vertical
-    "enableFallback": True,  # 25% higher success rate
-    "enableTranslation": True,
-    "watermark": "Optional brand text",
-    "imageUrls": []  # Images uploaded via Kie.ai File Upload API
-}
+import sys
+sys.path.append('/home/dev/.claude/scripts')
+from kie_client import KieClient
 ```
 
-**File Upload API (NEW - Preferred for Images):**
-- Base64 Upload: Files ≤1MB
-- File Stream: Files 1-100MB
-- URL Upload: Remote files
-- Auto-deleted after 3 days
-- Native integration with VEO 3
+**Full API documentation**: Read the script files directly for complete workflows and examples.
 
-## Production Workflow
+## 7 Critical Rules (Frame-to-Frame)
 
-### v3.0 Production Workflow (USER-CONTROLLED)
+1. **Face Visible in Ending Frame**: Character face must be visible (3/4 profile or facing camera) in every ending frame for continuity
+2. **One Action Per Scene**: Max 4 distinct 2-second steps, all serving ONE primary action
+3. **Maintain Continuity**: Ending state of Scene N = Starting state of Scene N+1 (no skipping steps)
+4. **Use JSON for Complex Scenes**: Multiple characters, camera moves, precise lighting → Use JSON structure
+5. **Plan Transitions**: Major location/time changes need dedicated transition scenes
+6. **Establish Environmental Aesthetics**: Set complete visual direction at transition points (day→night, etc.)
+7. **Product Visibility Throughout**: Once product exits frame, nearly impossible to reintroduce with brand accuracy
 
-**Phase 1: Discovery** → 🛑 **USER REVIEW 1** → **Phase 2: Creative** → **Phase 3: Technical** → **Phase 4: Quality** → 🛑 **USER APPROVAL 2** → **Phase 5: Generation** → **Phase 6: Delivery**
+**Full details**: `/docs/frame-to-frame-video-workflow.md`
 
-1. **User Approval Required**:
-   - STOP after creative brief for concept review
-   - STOP before generation for prompt/cost approval
-   - NO spending without explicit consent
+## Key Project Details
 
-2. **Product Consistency ENFORCED**:
-   - Upload product image FIRST
-   - Scenes 3-7: MUST use imageUrls parameter
-   - Action prompts only ("lifting this product")
+**API**: Kie.ai VEO 3
+- Key: `20108f4bba626227a1bb5e281d1e5a64`
+- Dashboard: https://kie.ai/dashboard
 
-3. **Duration Compliance**:
-   - 60s max = 7 scenes (7×8s = 56s)
-   - 30s max = 4 scenes (4×8s = 32s)
-   - NEVER exceed platform limits!
+**Output Structure**:
+- Videos: `docs/output/{scene_name}.mp4`
+- Ending frames: `docs/output/{scene_name}_ending.jpg`
+- Production plans: `production-plans/{campaign}/`
 
-4. **Complete Deliverables**:
-   - All videos in order
-   - Timed voiceover script
-   - Assembly instructions
-   - Music suggestions
-   - Export settings
+## MANDATORY Workflow
 
-5. **Technical Excellence**:
-   - Camera specs (lens, aperture, movement)
-   - Lighting (exposure ratios, key light)
-   - Imperfections (pores, stray hair, wear)
-   - Atmosphere (dust, volumetric light)
+**CRITICAL**: NEVER generate videos with raw prompts. ALWAYS use `veo3-prompt-architect` agent first.
 
-6. **Quality Gates**:
-   - Minimum 8/10 score required
-   - Product consistency verified
-   - Aspect ratio confirmed (16:9)
-   - No narration in generation
+1. Get enhanced prompt from agent with scene concept
+2. Generate with `kie_client.py` using enhanced prompt
+3. For frame-to-frame: Pass previous ending frame context to agent
+4. Repeat for each scene
 
-### Post-Production Audio Strategy
-- Generate videos WITHOUT narration
-- Add professional voiceover in post-production
-- Benefits: Perfect timing, consistent voice, no cutoff issues
-- Tools: 11Labs, ElevenLabs, or record your own
+**Why**: Agent prevents 80% of failures. Costs $0.38-$1.50 per generation - enhancement is critical.
 
-### Cost Optimization
-- **Testing/Social**: Use veo3_fast ($0.38)
-- **Hero/Commercial**: Use veo3 ($1.50)
-- **Batch Processing**: Group similar videos for efficiency
-- **Fallback**: Enable for 25% higher success rate
+## Project-Specific Workflow Notes
 
-## Project Structure (Simplified)
+- Always use `veo3-prompt-architect` agent before video generation
+- Default output: `docs/output/` directory
+- Frame extraction enabled by default for continuity
+- Product compositing: Generate scene first, composite product after
 
-```
-/scripts/                      # Unified generation scripts
-  veo3_generate.py            # Main unified generator (text-to-video & image-to-video)
-  veo3_image.py               # Legacy image-to-video helper (if needed)
+## Cost Optimization
 
-/production-plans/             # Campaign organization
-  h2o-pure/                   # Example campaign folder
-    prompts/
-      final-prompts.json      # Standard 4-scene version
-      h2o-pure-continuous-flow.json  # NEW: 8-segment extended version
-    tasks/                    # Auto-generated task tracking
+- **Testing/Iteration**: veo3_fast ($0.38)
+- **Final/Hero**: veo3 ($1.50)
+- **7 scenes × veo3_fast** = $2.66 (56 seconds total)
+- **Enable fallback**: 25% higher success rate (16:9 only)
 
-/data/                        # General task tracking
+## Critical Gotchas
 
-/docs/                        # VEO 3 documentation
-  veo3-essential-mastery-guide.md  # CRITICAL: Full technical requirements
-  VEO3-CREATIVE-WORKFLOW.md       # 7-phase creative process
-  templates/                      # NEW workflow templates
-    discovery-interview-template.md
-    technical-specification-sheet.md
-    quality-review-checklist.md
-    prompt-scoring-rubric.md
-    imperfection-library.md
+1. **Character Continuity**: Face must be visible at scene endings
+2. **Product Continuity**: Keep product in every frame OR plan for compositing
+3. **Action Density**: Don't cram multiple actions into 8 seconds
+4. **Environmental Transitions**: Explicitly describe night/day aesthetic changes
+5. **No Auto-Regen**: If generation fails quality check, it costs money to regenerate
+6. **JSON for Complex**: Use JSON structure for multi-character or precise scenes
 
-/.claude/agents/              # Claude Code agents
-  veo3-prompt-architect.md   # Creates cinema-grade prompts
-  veo3-production-manager.md # Orchestrates campaigns
-  veo3-api-optimizer.md      # API integration (contains API key)
+## Documentation Priority
 
-/images/                      # Product images
-  6mL H2O Pure_square.png
+1. **START HERE**: `/docs/frame-to-frame-video-workflow.md`
+2. **Prompt Engineering**: `/docs/veo3_prompt_analysis.md`
+3. **Templates**: `/docs/templates/60-second-campaign-template.md`
 
-/output/                      # Downloaded videos
+## Example Campaign
 
-VEO3-QUICK-START.md          # Quick start guide
-WORKFLOW-REVIEW.md           # Workflow analysis
-SCENE-CONTINUATION-GUIDE.md  # Frame continuation technique
-```
-
-## Critical Requirements (VEO 3 Essential Mastery Guide)
-
-### Mandatory in EVERY Prompt
-1. **Intentional Imperfections**:
-   - Visible pores, natural oil/sweat sheen
-   - Stray hairs (even in neat styles)
-   - Skin texture variations, subtle asymmetry
-   - Clothing wrinkles and wear
-
-2. **Camera Specifications**:
-   - Lens type: 35mm/50mm/85mm/100mm
-   - Aperture: F1.4/F2.8/F4/F8
-   - Movement: dolly/pan/tracking/static
-   - Angle: low/high/eye-level/Dutch
-
-3. **Lighting Architecture**:
-   - Exposure ratio: 2:1 (soft) or 4:1 (dramatic)
-   - Key light source and direction
-   - Atmospheric elements: dust particles, volumetric rays, haze
-
-4. **Color Science**:
-   - 60% dominant color
-   - 30% secondary color
-   - 10% accent color
-
-### Quality Gates (NEW)
-- **Creative Brief Required**: No prompts without intent understanding
-- **Quality Score ≥8/10**: Enforced before generation
-- **Command**: `python3 scripts/veo3_generate.py generate --prompt "..." --quality-score 8.5`
-
-## Critical Implementation Notes
-
-### Audio & Vocals Strategy
-- **NO NARRATION IN PROMPTS** - Add voiceover in post-production
-- Character dialogue OK if under 10 words
-- Focus on ambient sounds and effects in prompts
-- Include "(no subtitles)" directive
-- **Post-Production**: Use 11Labs, recorded voiceover, or AI voice tools
-- **Benefits**: No cutoff issues, perfect timing, consistent voice
-
-### Common Issues
-- Status endpoints may return 404 - use dashboard or callbacks
-- Videos take 10-15 minutes - plan accordingly
-- Fallback only works with 16:9 aspect ratio
-- 1080p processing takes additional 1-2 minutes after 720p
-
-### Critical Workflow Documentation (v3.0)
-- **🔴 MASTER WORKFLOW**: `/docs/VEO3-USER-APPROVAL-WORKFLOW.md` - READ FIRST
-- **🔴 API IMPLEMENTATION**: `/docs/VEO3-CORRECT-API-IMPLEMENTATION.md` - Image-to-video guide
-- **🔴 WORKFLOW v3.0**: `/docs/VEO3-WORKFLOW-v3.md` - Complete overhaul
-- **60-Second Campaign**: `/docs/templates/60-second-campaign-template.md`
-- **Discovery Interview**: `/docs/templates/discovery-interview-template.md`
-- **Technical Specs**: `/docs/templates/technical-specification-sheet.md`
-- **Quality Review**: `/docs/templates/quality-review-checklist.md`
-- **Workflow Audit**: `/docs/WORKFLOW-AUDIT-AND-IMPROVEMENTS.md`
-
-### Best Practices (Creative-First)
-- **Quick Start**: Read `VEO3-QUICK-START.md` for basics
-- **Long Content**: Read `SCENE-CONTINUATION-GUIDE.md` for 64s+ videos
-- **Testing**: Always use veo3_fast ($0.38) before veo3 ($1.50)
-- **Continuation**: Extract last frame, use as `--image` for next scene
-- **85% Rule**: Keep prompts 85% similar between connected scenes
-- **Segmentation**: Break stories into 8-second chunks
-- **Products**: Use `--image` flag for exact representation
-- **Status**: Check https://kie.ai/dashboard (10-15 min per segment)
+See `/docs/output/h2o_pure_test/` for complete 7-scene frame-to-frame campaign demonstrating all rules and workflows.
