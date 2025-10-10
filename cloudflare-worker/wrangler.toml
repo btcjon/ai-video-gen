@@ -1,0 +1,6 @@
+name = "cogvideox3-generator"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Worker settings
+workers_dev = true
